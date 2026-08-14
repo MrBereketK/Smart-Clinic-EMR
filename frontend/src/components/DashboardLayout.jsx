@@ -2,17 +2,21 @@ import { useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
-
-const roleUsers = {
-  receptionist: { name: "Adaeze Uche", role: "Front Desk Receptionist" },
-  doctor: { name: "Dr. Alex Morgan", role: "General Practitioner" },
-  admin: { name: "Kwame Osei", role: "System Administrator" },
-};
+import keycloak from "../services/keycloak"; // Import our Keycloak instance
 
 export default function DashboardLayout({ role, title, links }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
-  const user = roleUsers[role];
+
+  // Extract the real user data dynamically from the Keycloak JWT
+  const user = {
+    name:
+      keycloak.tokenParsed?.name ||
+      keycloak.tokenParsed?.preferred_username ||
+      "Unknown User",
+    // Capitalize the role prop (e.g., "receptionist" -> "Receptionist")
+    role: role.charAt(0).toUpperCase() + role.slice(1),
+  };
 
   const base = `/${role}`;
   const segment = location.pathname.replace(base, "").replace(/^\/+/, "");
