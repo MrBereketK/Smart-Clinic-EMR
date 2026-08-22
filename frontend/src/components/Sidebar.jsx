@@ -46,7 +46,15 @@ function NavIcon({ name }) {
   );
 }
 
-export default function Sidebar({ title, links, user, mobileOpen, onClose }) {
+// 1. Added onLogout to the destructured props
+export default function Sidebar({
+  title,
+  links,
+  user,
+  mobileOpen,
+  onClose,
+  onLogout,
+}) {
   return (
     <>
       {mobileOpen && (
@@ -100,7 +108,11 @@ export default function Sidebar({ title, links, user, mobileOpen, onClose }) {
               strokeWidth={1.5}
               stroke="currentColor"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18 18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -137,7 +149,9 @@ export default function Sidebar({ title, links, user, mobileOpen, onClose }) {
           <div className="flex items-center gap-3 rounded-xl px-2 py-2">
             <Avatar name={user.name} />
             <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-semibold text-white">{user.name}</p>
+              <p className="truncate text-sm font-semibold text-white">
+                {user.name}
+              </p>
               <p className="truncate text-xs text-slate-400">{user.role}</p>
             </div>
             <span className="relative flex h-2.5 w-2.5">
@@ -145,9 +159,12 @@ export default function Sidebar({ title, links, user, mobileOpen, onClose }) {
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-500" />
             </span>
           </div>
-          <NavLink
-            to="/login"
-            className="mt-1 flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white"
+
+          {/* 2. Replaced NavLink with a button that triggers onLogout */}
+          <button
+            type="button"
+            onClick={onLogout}
+            className="mt-1 flex w-full items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white"
           >
             <svg
               className="h-4 w-4"
@@ -163,7 +180,7 @@ export default function Sidebar({ title, links, user, mobileOpen, onClose }) {
               />
             </svg>
             Logout
-          </NavLink>
+          </button>
         </div>
       </aside>
     </>

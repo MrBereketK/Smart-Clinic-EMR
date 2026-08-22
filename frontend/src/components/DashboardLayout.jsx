@@ -30,6 +30,11 @@ export default function DashboardLayout({ role, title, links }) {
     { label: currentPage },
   ];
 
+  // 1. Create the logout function
+const handleLogout = () => {
+  keycloak.logout({ redirectUri: window.location.origin });
+};
+
   return (
     <div className="min-h-screen">
       <Sidebar
@@ -38,6 +43,7 @@ export default function DashboardLayout({ role, title, links }) {
         user={user}
         mobileOpen={mobileOpen}
         onClose={() => setMobileOpen(false)}
+        onLogout={handleLogout} // 2. Pass it down to the Sidebar component
       />
 
       <div className="lg:pl-64">
