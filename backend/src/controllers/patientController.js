@@ -95,11 +95,38 @@ const deletePatient = async (req, res) => {
   }
 };
 
-// Don't forget to export the new functions!
+// Add a medical note to a patient's file
+const addMedicalNote = async (req, res) => {
+  try {
+    // Extract the note details from the request body
+    const { doctorName, note, prescription } = req.body;
+    
+    // Use $push to append the note to the medicalNotes array
+    const updatedPatient = await Patient.findByIdAndUpdate(
+      req.params.id,
+      { 
+        $push: { 
+          medicalNotes: { doctorName, note, prescription } 
+        } 
+      },
+      { new: true, runValidators: true } // Return the updated document
+    );
+    
+    if (!updatedPatient) {
+      return res.status(404).json({ message: 'Patient not found' });
+    }
+    
+    res.status(200).json(updatedPatient);
+  } catch (error) {
+    res.status(400).json({ message: 'Error adding medical note', error: error.message });
+  }
+};
+
 module.exports = {
   createPatient,
   getPatients,
   getPatientById,
   updatePatient,
-  deletePatient
+  deletePatient,
+  addMedicalNote // <-- Don't forget to export it!
 };

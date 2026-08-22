@@ -67,6 +67,16 @@ const patientSchema = new mongoose.Schema(
       required: true,
       select: false, // Hides this field from standard API responses by default
     },
+
+    // --- 5. Medical History ---
+    medicalNotes: [
+      {
+        date: { type: Date, default: Date.now },
+        doctorName: { type: String, required: true },
+        note: { type: String, required: true },
+        prescription: { type: String },
+      },
+    ],
   },
   {
     // Automatically adds 'createdAt' and 'updatedAt' fields
